@@ -29,7 +29,7 @@ app.use(cors({
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Date'],
     maxAge: 100,
     credentials: true,
-    allowMethods: ['GET', 'POST', 'OPTIONS'],
+    allowMethods: ['GET', 'POST', 'OPTIONS','put','delete'],
     allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Custom-Header', 'anonymous'],
 }));
 

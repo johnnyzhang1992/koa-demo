@@ -1,16 +1,19 @@
 const Router = require("koa-router");
 
-const { create,findOne} = require('../controllers/users');
+const { create, findOne } = require("../controllers/users");
 
 const router = new Router({
 	prefix: "/users"
 });
 
 router.get("/", async function(ctx) {
-	ctx.verifyParams({
-		name: { type: "string", required: true }
-		// age: {type: 'number', required: false}
-	});
+	// ctx.verifyParams({
+	// 	name: {
+	// 		type: "string",
+	// 		required: true
+	// 	}
+	// 	// age: {type: 'number', required: false}
+	// });
 	ctx.body = {
 		user: [
 			{
@@ -23,11 +26,8 @@ router.get("/", async function(ctx) {
 	};
 });
 
-router.get("/:id",findOne);
+router.get("/:id", findOne);
 
-router.post(
-	"/create",
-	create
-);
+router.post("/create", create);
 
 module.exports = router;
