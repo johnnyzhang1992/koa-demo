@@ -1,6 +1,6 @@
 const Koa = require("koa");
 const path = require("path");
-const cors = require('koa2-cors')//跨域配置
+const cors = require("koa2-cors"); //跨域配置
 const koaBody = require("koa-body");
 const parameter = require("koa-parameter");
 
@@ -25,15 +25,25 @@ app.use(
 );
 
 // 跨域配置
-app.use(cors({
-    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Date'],
-    maxAge: 100,
-    credentials: true,
-    allowMethods: ['GET', 'POST', 'OPTIONS','put','delete'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Custom-Header', 'anonymous'],
-}));
+app.use(
+	cors({
+		exposeHeaders: ["WWW-Authenticate", "Server-Authorization", "Date"],
+		maxAge: 100,
+		credentials: true,
+		allowMethods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+		allowHeaders: [
+			"Content-Type",
+			"Authorization",
+			"Accept",
+			"X-Custom-Header",
+			"anonymous"
+		]
+	})
+);
 
 app.use(parameter(app));
+
+// routers
 routing(app);
 
 app.listen(3001);
