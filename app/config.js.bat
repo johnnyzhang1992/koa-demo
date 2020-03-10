@@ -1,3 +1,3 @@
 module.exports = {
-    mongoURI:"mongodb+srv://test:<password>@<mongo server url>"
+    mongoURI:"mongodb://localhost:27017"
 }
