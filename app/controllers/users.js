@@ -1,3 +1,22 @@
+const mongoose = require("mongoose");
+
+const User = require("../models/user");
+const mongoURI = require("../config").mongoURI;
+
+mongoose.set("useCreateIndex", true);
+mongoose
+	.connect(mongoURI, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	})
+	.then(res => {
+		console.log("connection----");
+	})
+	.catch(err => {
+		console.log("err:----");
+		console.log(err);
+	});
+
 class UserController {
 	// async find(ctx) {
 	// 	const { per_page = 10 } = ctx.query;
@@ -25,33 +44,56 @@ class UserController {
 		// 	name: { type: "string", required: true }
 		// 	// age: {type: 'number', required: false}
 		// });
-		ctx.body = id === 23 ? {
-			user: {
-				name: "jake",
-				age: 23,
-				id
-			},
-			status_code: 200
-		} : {
-				message: 'user not find',
-				status_code: 200
-		};
+		ctx.body =
+			id === 23
+				? {
+						user: {
+							name: "jake",
+							age: 23,
+							id
+						},
+						status_code: 200
+				  }
+				: {
+						message: "user not find",
+						status_code: 200
+				  };
 	}
 
 	async create(ctx) {
 		ctx.verifyParams({
 			name: { type: "string", required: true },
-			age: { type: "string", required: true }
+			email: { type: "string", required: true },
+			password: { type: "string" }
 		});
-		// const repeatedUser = await User.findOne({ name });
-		const { name, age } = ctx.request.body;
-		// const user = await new User(ctx.request.body).save();
-		const user = {
-			id: 23,
-			name: name || "jake",
-			age: age || 18
-		};
-		ctx.body = user;
+		const findResult = await User.find({ email: ctx.request.body.email });
+		if (findResult.length > 0) {
+			ctx.status = 500;
+			ctx.body = {
+				message: "email is exit!",
+				data: findResult
+			};
+		} else {
+			const { email, name, password } = ctx.request.body;
+			ctx.status = 200;
+			const newUser = new User({
+				email,
+				name,
+				password
+			});
+			// console.log(newUser);
+			await newUser
+				.save()
+				.then(user => {
+					ctx.body = user;
+				})
+				.catch(err => {
+					console.log(err);
+					ctx.body = {
+						message: "create fail"
+					};
+				});
+		}
 	}
 }
 
