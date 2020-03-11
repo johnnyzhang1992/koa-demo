@@ -3,10 +3,17 @@ const path = require("path");
 const cors = require("koa2-cors"); //跨域配置
 const koaBody = require("koa-body");
 const parameter = require("koa-parameter");
+const static = require("koa-static"); // 静态资源
 
 const routing = require("./routers");
 const app = new Koa();
 
+// 静态资源目录对于相对入口文件index.js的路径
+const staticPath = "./static";
+
+app.use(static(path.join(__dirname, staticPath)));
+console.log(path.join(__dirname, staticPath));
+// 文件上传
 app.use(
 	koaBody({
 		multipart: true, // 支持文件上传
@@ -41,9 +48,13 @@ app.use(
 	})
 );
 
+// 参数校验
+// 变量类型以及是否缺少的检查
 app.use(parameter(app));
 
-// routers
+// 路由配置
 routing(app);
 
-app.listen(3001);
+app.listen(3001, () => {
+	console.log("[demo] static-use-middleware is starting at port 3000");
+});

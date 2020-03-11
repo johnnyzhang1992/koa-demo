@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 const mongoURI = require("../config").mongoURI;
 
+// 数据库连接
 mongoose.set("useCreateIndex", true);
 mongoose
 	.connect(mongoURI, {
@@ -17,6 +18,9 @@ mongoose
 		console.log(err);
 	});
 
+/**
+ * @description User 控制器
+ */
 class UserController {
 	/**
 	 * @description 根据条件查询用户
