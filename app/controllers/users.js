@@ -19,7 +19,7 @@ mongoose
 
 class UserController {
 	/**
-	 * @description根据条件查询用户
+	 * @description 根据条件查询用户
 	 * @param {*} ctx
 	 */
 	async findOne(ctx) {
