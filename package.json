@@ -10,6 +10,8 @@
   "author": "johnnyzhang1992",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "i": "^0.3.6",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
     "koa-parameter": "^3.0.1",
@@ -17,6 +19,7 @@
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
     "mongoose": "^5.9.4",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "npm": "^6.14.2"
   }
 }

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+const tools = require('../utils/tools');
 const User = require("../models/user");
 const mongoURI = require("../config").mongoURI;
 
@@ -62,12 +63,13 @@ class UserController {
 			const newUser = new User({
 				email,
 				name,
-				password
+				password: tools.enbcrypt(password)
 			});
-			// console.log(newUser);
+			console.log(newUser);
 			await newUser
 				.save()
 				.then(user => {
+					console.log(user);
 					ctx.body = user || {
 						message: "用户创建失败"
 					};
