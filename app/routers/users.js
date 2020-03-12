@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 
 const { register, findOne, login } = require("../controllers/users");
+const passport = require('koa-passport');
 
 const router = new Router({
 	prefix: "/users"
@@ -26,7 +27,7 @@ router.get("/", async function(ctx) {
 	};
 });
 
-router.get("/:id", findOne);
+router.get("/:id", passport.authenticate('jwt', { session: false }),findOne);
 
 router.post("/register", register);
 

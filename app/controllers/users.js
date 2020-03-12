@@ -31,14 +31,19 @@ class UserController {
 	 * @param {*} ctx
 	 */
 	async findOne(ctx) {
+		const { name, email, id } = ctx.state.user; 
 		// 路由匹配
-		const { id } = ctx.params;
+		// const { id } = ctx.params;
 		// URL 参数
 		const query = ctx.request.query;
 		ctx.body = {
 			status_code: 200,
 			query,
-			id
+			data: {
+				id,
+				name,
+				email
+			}
 		};
 	}
 

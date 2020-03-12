@@ -4,6 +4,7 @@ const cors = require("koa2-cors"); //跨域配置
 const koaBody = require("koa-body");
 const parameter = require("koa-parameter");
 const static = require("koa-static"); // 静态资源
+const passport = require("koa-passport");
 
 const routing = require("./routers");
 const app = new Koa();
@@ -52,6 +53,11 @@ app.use(
 // 变量类型以及是否缺少的检查
 app.use(parameter(app));
 
+// token 验证
+app.use(passport.initialize());
+app.use(passport.session());
+
+require("./utils/passport")(passport);
 // 路由配置
 routing(app);
 
