@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
-const tools = require('../utils/tools');
+const tools = require("../utils/tools");
 const User = require("../models/user");
-const mongoURI = require("../config").mongoURI;
+const config = require("../config");
+
+const { mongoURI, tokenSecret } = config;
 
 // 数据库连接
 mongoose.set("useCreateIndex", true);
@@ -48,10 +51,10 @@ class UserController {
 		ctx.verifyParams({
 			name: { type: "string", required: true },
 			email: { type: "string", required: true },
-			password: { type: "string",required: true }
+			password: { type: "string", required: true }
 		});
 		const { email, name, password } = ctx.request.body;
-		const findResult = await User.find({ email});
+		const findResult = await User.find({ email });
 		if (findResult.length > 0) {
 			ctx.status = 500;
 			ctx.body = {
@@ -83,40 +86,40 @@ class UserController {
 		}
 	}
 
-	async login(ctx) { 
+	async login(ctx) {
 		ctx.verifyParams({
 			email: { type: "string", required: true },
-			password: { type: "string" ,required: true}
+			password: { type: "string", required: true }
 		});
 		const { email, password } = ctx.request.body;
 		const findResult = await User.find({ email });
-		if (findResult.length === 0) { 
+		if (findResult.length === 0) {
 			// 用户不存在
 			ctx.status = 200;
 			ctx.body = {
-				message: 'email not exit'
-			}
+				message: "email not exit"
+			};
 		} else {
 			// 密码对比
 			const isTrue = tools.compareBcrypt(password, findResult[0].password);
 			if (isTrue) {
+				const { id, name } = findResult[0];
+				const payload = { id, name };
+				const token = jwt.sign(payload, tokenSecret, { expiresIn: 3600 });
 				// 密码正确
 				ctx.body = {
-					message: 'login in',
-					data: {
-						email,
-						password
-					},
-					user: findResult[0]	
-				}
-			} else { 
+					message: "login in",
+					token: "Bearer " + token,
+					data: findResult[0]
+				};
+			} else {
 				// 错误
 				ctx.status = 401;
 				ctx.body = {
-					message: 'password wrong'
-				}
+					message: "password wrong"
+				};
 			}
-		 }
+		}
 	}
 }
 
