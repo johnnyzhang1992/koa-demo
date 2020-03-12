@@ -44,13 +44,14 @@ class UserController {
 	 * @param {*} ctx
 	 */
 
-	async create(ctx) {
+	async register(ctx) {
 		ctx.verifyParams({
 			name: { type: "string", required: true },
 			email: { type: "string", required: true },
-			password: { type: "string" }
+			password: { type: "string",required: true }
 		});
-		const findResult = await User.find({ email: ctx.request.body.email });
+		const { email, name, password } = ctx.request.body;
+		const findResult = await User.find({ email});
 		if (findResult.length > 0) {
 			ctx.status = 500;
 			ctx.body = {
@@ -58,7 +59,6 @@ class UserController {
 				data: findResult
 			};
 		} else {
-			const { email, name, password } = ctx.request.body;
 			ctx.status = 200;
 			const newUser = new User({
 				email,
@@ -81,6 +81,42 @@ class UserController {
 					};
 				});
 		}
+	}
+
+	async login(ctx) { 
+		ctx.verifyParams({
+			email: { type: "string", required: true },
+			password: { type: "string" ,required: true}
+		});
+		const { email, password } = ctx.request.body;
+		const findResult = await User.find({ email });
+		if (findResult.length === 0) { 
+			// 用户不存在
+			ctx.status = 200;
+			ctx.body = {
+				message: 'email not exit'
+			}
+		} else {
+			// 密码对比
+			const isTrue = tools.compareBcrypt(password, findResult[0].password);
+			if (isTrue) {
+				// 密码正确
+				ctx.body = {
+					message: 'login in',
+					data: {
+						email,
+						password
+					},
+					user: findResult[0]	
+				}
+			} else { 
+				// 错误
+				ctx.status = 401;
+				ctx.body = {
+					message: 'password wrong'
+				}
+			}
+		 }
 	}
 }
 

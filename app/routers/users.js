@@ -1,6 +1,6 @@
 const Router = require("koa-router");
 
-const { create, findOne } = require("../controllers/users");
+const { register, findOne, login } = require("../controllers/users");
 
 const router = new Router({
 	prefix: "/users"
@@ -28,6 +28,8 @@ router.get("/", async function(ctx) {
 
 router.get("/:id", findOne);
 
-router.post("/create", create);
+router.post("/register", register);
+
+router.post("/login", login);
 
 module.exports = router;
