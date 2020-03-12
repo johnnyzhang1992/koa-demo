@@ -56,11 +56,9 @@ app.use(parameter(app));
 // token 验证
 app.use(passport.initialize());
 app.use(passport.session());
-
 require("./utils/passport")(passport);
+
 // 路由配置
 routing(app);
 
-app.listen(3001, () => {
-	console.log("[demo] static-use-middleware is starting at port 3000");
-});
+app.listen(3001);

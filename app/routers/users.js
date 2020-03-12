@@ -7,30 +7,25 @@ const router = new Router({
 	prefix: "/users"
 });
 
-router.get("/", async function(ctx) {
-	// ctx.verifyParams({
-	// 	name: {
-	// 		type: "string",
-	// 		required: true
-	// 	}
-	// 	// age: {type: 'number', required: false}
-	// });
-	ctx.body = {
-		user: [
-			{
-				name: "jake",
-				age: 23,
-				id: 22
-			}
-		],
-		status_code: 200
-	};
-});
-
-router.get("/:id", passport.authenticate('jwt', { session: false }),findOne);
-
+/**
+ * @reouter "/user/login"
+ * @description 用户注册
+ * @access 公开
+ */
 router.post("/register", register);
 
+/**
+ * @reouter "/user/login"
+ * @description 用户登录
+ * @access 公开
+ */
 router.post("/login", login);
+
+/**
+ * @reouter "/user/:id"
+ * @description 获取某个用户的详细信息
+ * @access 登录验证
+ */
+router.get("/:id", passport.authenticate('jwt', { session: false }),findOne);
 
 module.exports = router;
