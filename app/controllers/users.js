@@ -31,7 +31,7 @@ class UserController {
 	 * @param {*} ctx
 	 */
 	async findOne(ctx) {
-		const { name, email, id } = ctx.state.user; 
+		const { name, email, id } = ctx.state.user;
 		// 路由匹配
 		// const { id } = ctx.params;
 		// URL 参数
@@ -91,6 +91,10 @@ class UserController {
 		}
 	}
 
+	/**
+	 * @description 用户登录
+	 * @param {*} ctx
+	 */
 	async login(ctx) {
 		ctx.verifyParams({
 			email: { type: "string", required: true },
