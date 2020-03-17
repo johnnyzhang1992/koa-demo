@@ -1,25 +1,11 @@
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 const tools = require("../utils/tools");
 const User = require("../models/user");
 const config = require("../config");
 
-const { mongoURI, tokenSecret } = config;
+const { tokenSecret } = config;
 
-// 数据库连接
-mongoose.set("useCreateIndex", true);
-mongoose.connect(mongoURI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function() {
-	// we're connected!
-	console.log("mongoose connection---");
-});
 /**
  * @description User 控制器
  */
@@ -42,7 +28,7 @@ class UserController {
 		} else if (name) {
 			result = await User.findOne({ name });
 		}
-		const { password, ...rest } =  result && result._doc ? result._doc : {};
+		const { password, ...rest } = result && result._doc ? result._doc : {};
 		ctx.body = {
 			status_code: 200,
 			query,
@@ -55,7 +41,6 @@ class UserController {
 	 * @description 创建用户
 	 * @param {*} ctx
 	 */
-
 	async register(ctx) {
 		ctx.verifyParams({
 			name: { type: "string", required: true },

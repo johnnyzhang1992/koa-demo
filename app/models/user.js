@@ -33,5 +33,5 @@ const UserSchema = new Schema(
 		}
 	}
 );
-
+mongoose.set("useCreateIndex", true);
 module.exports = User = mongoose.model("users", UserSchema);
