@@ -9,19 +9,17 @@ const { mongoURI, tokenSecret } = config;
 
 // 数据库连接
 mongoose.set("useCreateIndex", true);
-mongoose
-	.connect(mongoURI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true
-	})
-	.then(res => {
-		console.log("connection----");
-	})
-	.catch(err => {
-		console.log("err:----");
-		console.log(err);
-	});
+mongoose.connect(mongoURI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+});
 
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function() {
+	// we're connected!
+	console.log("mongoose connection---");
+});
 /**
  * @description User 控制器
  */
@@ -31,19 +29,25 @@ class UserController {
 	 * @param {*} ctx
 	 */
 	async findOne(ctx) {
-		const { name, email, id } = ctx.state.user;
+		// 当前登录用户
+		// const { name, email, id } = ctx.state.user;
 		// 路由匹配
 		// const { id } = ctx.params;
 		// URL 参数
+		let result = {};
 		const query = ctx.request.query;
+		const { email, name } = ctx.request.query;
+		if (email) {
+			result = await User.findOne({ email });
+		} else if (name) {
+			result = await User.findOne({ name });
+		}
+		const { password, ...rest } =  result && result._doc ? result._doc : {};
 		ctx.body = {
 			status_code: 200,
 			query,
-			data: {
-				id,
-				name,
-				email
-			}
+			user: rest,
+			current_user: ctx.state.user
 		};
 	}
 

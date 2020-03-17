@@ -22,10 +22,10 @@ router.post("/register", register);
 router.post("/login", login);
 
 /**
- * @reouter "/user/:id"
+ * @reouter "/user/find"
  * @description 获取某个用户的详细信息
  * @access 登录验证
  */
-router.get("/:id", passport.authenticate('jwt', { session: false }),findOne);
+router.get("/find", passport.authenticate('jwt', { session: false }),findOne);
 
 module.exports = router;
