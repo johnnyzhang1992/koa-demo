@@ -1,11 +1,11 @@
 const Koa = require("koa");
 const path = require("path");
 const cors = require("koa2-cors"); //跨域配置
-const koaBody = require("koa-body");
-const parameter = require("koa-parameter");
+const koaBody = require("koa-body"); // 请求body 解析
+const parameter = require("koa-parameter"); // 请求参数处理功能
 const static = require("koa-static"); // 静态资源
-const passport = require("koa-passport");
-const mongoose = require("mongoose");
+const passport = require("koa-passport"); // token验证解析
+const mongoose = require("mongoose"); // 数据库
 
 const config = require("./config");
 const routing = require("./routers");
