@@ -17,7 +17,8 @@ const app = new Koa();
 mongoose.connect(mongoURI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
-	autoIndex: true
+	autoIndex: false,
+	keepAlive: 120
 });
 // debug 模式
 mongoose.set('debug', true);
