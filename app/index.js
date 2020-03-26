@@ -5,30 +5,12 @@ const koaBody = require("koa-body"); // 请求body 解析
 const parameter = require("koa-parameter"); // 请求参数处理功能
 const static = require("koa-static"); // 静态资源
 const passport = require("koa-passport"); // token验证解析
-const mongoose = require("mongoose"); // 数据库
+const mongoConfig = require("./config/mongo"); // 数据库
 
-const config = require("./config");
 const routing = require("./routers");
 
-const { mongoURI } = config;
 const app = new Koa();
 
-// ----- 数据库连接 ----start
-mongoose.connect(mongoURI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	autoIndex: false,
-	keepAlive: 120
-});
-// debug 模式
-mongoose.set("debug", true);
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function() {
-	// we're connected!
-	console.log("mongoose connection---");
-});
-// ----- 数据库连接 ----end
 
 // 静态资源目录对于相对入口文件index.js的路径
 const staticPath = "./static";
@@ -52,6 +34,9 @@ app.use(
 		}
 	})
 );
+
+// 连接数据库
+mongoConfig.connect();
 
 // 跨域配置
 // var whitelist = ["http://example1.com", "http://example2.com"];
