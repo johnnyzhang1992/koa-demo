@@ -21,7 +21,7 @@ mongoose.connect(mongoURI, {
 	keepAlive: 120
 });
 // debug 模式
-mongoose.set('debug', true);
+mongoose.set("debug", true);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function() {
@@ -54,6 +54,8 @@ app.use(
 );
 
 // 跨域配置
+// var whitelist = ["http://example1.com", "http://example2.com"];
+
 app.use(
 	cors({
 		exposeHeaders: ["WWW-Authenticate", "Server-Authorization", "Date"],
@@ -66,7 +68,15 @@ app.use(
 			"Accept",
 			"X-Custom-Header",
 			"anonymous"
-		]
+		],
+		optionsSuccessStatus: 204,
+		// origin: function(ctx) {
+		// 	console.log(ctx);
+		// 	if (!whitelist.includes(ctx.request.header.origin)) {
+		// 		return false;
+		// 	}
+		// 	return "*";
+		// }
 	})
 );
 
