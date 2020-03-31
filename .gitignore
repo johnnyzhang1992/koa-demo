@@ -4,3 +4,4 @@
 # config
 app/config.js
 yarn.lock
+app/static/uploads/*

@@ -16,21 +16,21 @@ const app = new Koa();
 const staticPath = "./static";
 
 app.use(static(path.join(__dirname, staticPath)));
-console.log(path.join(__dirname, staticPath));
 // 文件上传
 app.use(
 	koaBody({
 		multipart: true, // 支持文件上传
 		encoding: "gzip",
 		formidable: {
-			uploadDir: path.join(__dirname, "public/uploads"), // 设置文件上传目录
+			// uploadDir: path.join(__dirname, "static/uploads"), // 设置文件上传目录
 			keepExtensions: true, // 保持文件的后缀
 			maxFieldsSize: 2 * 1024 * 1024, // 文件上传大小 2M
-			onFileBegin: (name, file) => {
-				// 文件上传前的设置
-				// console.log(`name: ${name}`);
-				// console.log(file);
-			}
+			hash: 'md5',
+			// onFileBegin: (name, file) => {
+			// 	// 文件上传前的设置
+			// 	console.log(`name: ${name}`);
+			// 	console.log(file);
+			// }
 		}
 	})
 );
