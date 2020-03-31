@@ -15,7 +15,6 @@ class CommonController {
 		// 上传单个文件
         const files = ctx.request.files.file; // 获取上传文件
         const filePaths = [];
-        console.log(files);
 		for (let file of files) {
 			// 创建可读流
             const reader = fs.createReadStream(file.path);
