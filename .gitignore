@@ -3,5 +3,6 @@
 
 # config
 app/config.js
-yarn.lock
+# yarn.lock
+package-lock.json
 app/static/uploads/*
