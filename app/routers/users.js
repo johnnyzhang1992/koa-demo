@@ -1,10 +1,10 @@
 const Router = require("koa-router");
 
 const { register, findOne, login } = require("../controllers/users");
-const passport = require('koa-passport');
+const passport = require("koa-passport");
 
 const router = new Router({
-	prefix: "/users"
+	prefix: "/users",
 });
 
 /**
@@ -26,6 +26,6 @@ router.post("/login", login);
  * @description 获取某个用户的详细信息
  * @access 登录验证
  */
-router.get("/find", passport.authenticate('jwt', { session: false }),findOne);
+router.get("/find", passport.authenticate("jwt", { session: false }), findOne);
 
 module.exports = router;
